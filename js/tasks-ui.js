@@ -15,13 +15,17 @@ import {
  */
 export function renderTasks(dom) {
   const dailyTasks = getDailyTasks();
-  const tasksHtml = dailyTasks.tasks.map(task => `
-    <div class="task-item ${task.completed ? 'completed' : ''}" data-task-id="${task.id}">
-      <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} />
+  const tasksHtml = dailyTasks.tasks.map(task => {
+    // Check if this is a prescript task (starts with ✓ or ✗)
+    const isPrescript = task.text.startsWith('✓ ') || task.text.startsWith('✗ ');
+
+    return `
+    <div class="task-item ${task.completed ? 'completed' : ''} ${isPrescript ? 'task-prescript' : ''}" data-task-id="${task.id}">
+      ${!isPrescript ? `<input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} />` : ''}
       <span class="task-text">${task.text}</span>
-      <button class="task-delete" title="Delete task">×</button>
+      ${!isPrescript ? `<button class="task-delete" title="Delete task">×</button>` : ''}
     </div>
-  `).join('');
+  `}).join('');
 
   dom.tasksList.innerHTML = tasksHtml;
   updateTaskStats(dom);

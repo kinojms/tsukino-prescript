@@ -497,6 +497,10 @@ body::after {
   text-decoration: line-through;
 }
 
+.task-item.task-prescript {
+  padding-left: clamp(24px, 6vw, 30px);  /* Align with checkbox position */
+}
+
 .task-checkbox {
   width: clamp(16px, 4vw, 18px);  /* Responsive checkbox size */
   height: clamp(16px, 4vw, 18px);  /* Responsive checkbox size */
@@ -608,7 +612,6 @@ body::after {
 .btn-prescript-action:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
   padding: 6px 12px;
   font-family: var(--font-mono);
   font-size: 10px;
@@ -616,7 +619,7 @@ body::after {
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
-}
+}   
 
 .btn-suggest:hover {
   border-color: var(--primary);
