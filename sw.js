@@ -13,6 +13,10 @@ const urlsToCache = [
   './js/animation.js',
   './js/audio.js',
   './js/ui.js',
+  './js/notifications.js',
+  './js/tasks-ui.js',
+  './js/tasks.js',
+  './js/cipher-background.js',
   './manifest.json',
   './assets/images/index-logo.png',
   './assets/audio/index_message_1.wav',
@@ -21,19 +25,44 @@ const urlsToCache = [
 
 // Install event - cache resources
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => cache.addAll(urlsToCache))
   );
 });
 
-// Fetch event - serve from cache when offline
+// Activate event - take control immediately
+self.addEventListener('activate', (event) => {
+  event.waitUntil(self.clients.claim());
+});
+
+// Fetch event - network-first for navigation, cache-first for other assets
 self.addEventListener('fetch', (event) => {
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const clonedResponse = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clonedResponse));
+          return response;
+        })
+        .catch(() => caches.match('./'))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request);
+        if (response) {
+          return response;
+        }
+        return fetch(event.request).then((networkResponse) => {
+          const clonedResponse = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clonedResponse));
+          return networkResponse;
+        });
       })
   );
 });
