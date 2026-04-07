@@ -664,7 +664,7 @@ body::after {
   pointer-events: none;
   z-index: -1;  /* Behind terminal shell but above page background */
   overflow: hidden;
-  opacity: 0.6;  /* Increased visibility */
+  opacity: 0.9;  /* Increased visibility */
   font-family: var(--font-mono);
   font-size: 14px;
   line-height: 1.3;
