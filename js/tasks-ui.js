@@ -5,11 +5,9 @@
 
 import {
   getDailyTasks,
-  addTask,
   toggleTask,
   deleteTask,
   getTaskStats,
-  generateSuggestedTasks,
 } from './tasks.js';
 
 /**
@@ -38,18 +36,6 @@ export function updateTaskStats(dom) {
 }
 
 /**
- * Handle adding a new task
- */
-export function handleAddTask(dom) {
-  const text = dom.taskInput.value.trim();
-  if (!text) return;
-
-  addTask(text);
-  dom.taskInput.value = '';
-  renderTasks(dom);
-}
-
-/**
  * Handle task checkbox toggle
  */
 export function handleTaskToggle(taskId, dom) {
@@ -66,34 +52,11 @@ export function handleTaskDelete(taskId, dom) {
 }
 
 /**
- * Handle task suggestions
- */
-export function handleTaskSuggestions(dom) {
-  const suggestions = generateSuggestedTasks();
-
-  suggestions.forEach(suggestion => {
-    addTask(suggestion);
-  });
-
-  renderTasks(dom);
-}
-
-/**
  * Initialize tasks functionality
  */
 export function initTasks(dom) {
   // Render existing tasks
   renderTasks(dom);
-
-  // Add task button
-  dom.addTaskBtn.addEventListener('click', () => handleAddTask(dom));
-
-  // Task input enter key
-  dom.taskInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      handleAddTask(dom);
-    }
-  });
 
   // Task list event delegation
   dom.tasksList.addEventListener('change', (e) => {
@@ -111,7 +74,4 @@ export function initTasks(dom) {
       handleTaskDelete(taskId, dom);
     }
   });
-
-  // Suggestions button
-  dom.suggestTasksBtn.addEventListener('click', () => handleTaskSuggestions(dom));
 }

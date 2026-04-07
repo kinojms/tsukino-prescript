@@ -67,6 +67,13 @@ function resetDailyUsageIfNeeded() {
  */
 async function fetchPrescript() {
   if (state.isLoading) return;  // Guard: prevent double-clicks
+
+  // Check if there's a pending prescript that needs completion
+  if (state.prescriptPending) {
+    showError('COMPLETE CURRENT PRESCRIPT BEFORE REQUESTING NEW ONE.', dom);
+    return;
+  }
+
   resetDailyUsageIfNeeded();
 
   if (state.dailyUsed >= CONFIG.dailyLimit) {
@@ -88,6 +95,10 @@ async function fetchPrescript() {
       throw new Error('Prescript archive is empty.');
     }
 
+    // Store current prescript and mark as pending
+    state.currentPrescript = prescriptMessage;
+    state.prescriptPending = true;
+
     // ── Success: Run animation ────────────────────────────────
     setLoadingState(false, dom);
 
@@ -107,10 +118,56 @@ async function fetchPrescript() {
     // Run the cipher → reveal animation with actual text
     runCipherAnimation(prescriptMessage, dom);
 
+    // Show prescript action buttons after animation completes
+    setTimeout(() => {
+      dom.prescriptActions.style.display = 'flex';
+      dom.btnReceive.disabled = true;
+      dom.btnReceive.textContent = 'COMPLETE CURRENT PRESCRIPT';
+    }, CONFIG.cipherDuration + 1000); // Wait for animation + buffer
+
   } catch (err) {
     console.error('[INDEX TERMINAL] Transmission error:', err);
     setLoadingState(false, dom);
     showError(`RELAY ERROR: ${err.message || 'Unknown signal interference.'}`, dom);
+  }
+}
+
+/**
+ * Handle prescript completion (Done or Failed)
+ */
+function completePrescript(status) {
+  if (!state.prescriptPending || !state.currentPrescript) return;
+
+  try {
+    // Add prescript as a task
+    const { addTask } = await import('./tasks.js');
+    const taskText = status === 'done'
+      ? `✓ ${state.currentPrescript}`
+      : `✗ ${state.currentPrescript}`;
+
+    addTask(taskText);
+
+    // Reset prescript state
+    state.currentPrescript = null;
+    state.prescriptPending = false;
+
+    // Hide action buttons and re-enable receive button
+    dom.prescriptActions.style.display = 'none';
+    dom.btnReceive.disabled = false;
+    dom.btnReceive.textContent = 'RECEIVE NEW PRESCRIPT';
+
+    // Update UI
+    const { initTasks } = await import('./tasks-ui.js');
+    initTasks(dom);
+
+    // Show success message
+    showError(status === 'done'
+      ? 'PRESCRIPT MARKED COMPLETE — ADDED TO TASKS.'
+      : 'PRESCRIPT MARKED FAILED — ADDED TO TASKS.', dom);
+
+  } catch (err) {
+    console.error('[INDEX TERMINAL] Task creation error:', err);
+    showError('ERROR ADDING PRESCRIPT TO TASKS.', dom);
   }
 }
 
@@ -145,6 +202,10 @@ function init() {
 
   // Attach event listeners
   dom.btnReceive.addEventListener('click', fetchPrescript);
+
+  // Prescript action buttons
+  dom.prescriptDoneBtn.addEventListener('click', () => completePrescript('done'));
+  dom.prescriptFailedBtn.addEventListener('click', () => completePrescript('failed'));
 
   // Keyboard shortcut: press Enter to receive a prescript
   document.addEventListener('keydown', (e) => {

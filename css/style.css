@@ -9,7 +9,7 @@
   --bg:           #000000;
   --primary:      #4facff;   /* Logo blue — main text color */
   --primary-dim:  #1e7fd4;   /* Muted logo blue — secondary text */
-  --primary-dark: #1457aa;   /* Dark blue — borders/fills */
+  --primary-dark: #ffffff;   /* White — borders/fills */
   --danger:       #ff3c3c;   /* Red accent for warnings */
   --glow-sm:  0 0 4px #4facff, 0 0 10px #4facff55;
   --glow-md:  0 0 6px #4facff, 0 0 18px #4facffaa, 0 0 36px #4facff33;
@@ -72,7 +72,7 @@ body::after {
 }
 
 /* ============================================================
-   MAIN LAYOUT — centered column with mobile-first approach
+   MAIN LAYOUT — desktop-first with mobile overrides
    ============================================================ */
 .terminal-shell {
   min-height: 100vh;
@@ -80,18 +80,17 @@ body::after {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 16px 12px;  /* Reduced padding for mobile */
+  padding: 32px 20px;  /* Desktop padding */
   gap: 0;
   position: relative;
 }
 
 /* ============================================================
-   BEEPER DEVICE WRAPPER — responsive container
+   BEEPER DEVICE WRAPPER — desktop-optimized container
    ============================================================ */
 .beeper {
   width: 100%;
   max-width: 960px;
-  min-height: 100vh;  /* Ensure full height on mobile */
   border: 1px solid var(--primary-dim);
   border-radius: 8px;
   box-shadow:
@@ -127,30 +126,28 @@ body::after {
 }
 
 /* ============================================================
-   HEADER BAR — responsive layout
+   HEADER BAR — desktop-optimized with mobile overrides
    ============================================================ */
 .beeper-header {
   background: rgba(79, 172, 255, 0.05);
   border-bottom: 1px solid var(--primary-dark);
-  padding: 16px 20px;  /* Reduced padding for mobile */
+  padding: 18px 24px;  /* Desktop padding */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;  /* Allow wrapping on very small screens */
+  gap: 14px;
 }
 
 .org-logo-img {
-  height: clamp(32px, 8vw, 42px);  /* Responsive logo size */
+  height: 42px;  /* Desktop size */
   width: auto;
   filter: drop-shadow(var(--glow-sm));
-  margin-right: 12px;
-  flex-shrink: 0;
+  margin-right: 14px;
 }
 
 .org-logo-text {
   font-family: var(--font-title);
-  font-size: clamp(11px, 2.5vw, 16px);  /* Responsive font size */
+  font-size: 16px;  /* Desktop size */
   font-weight: 900;
   letter-spacing: 0.22em;
   text-shadow: var(--glow-md);
@@ -165,17 +162,16 @@ body::after {
 .status-indicator {
   display: flex;
   align-items: center;
-  gap: 8px;  /* Reduced gap for mobile */
-  font-size: clamp(10px, 2vw, 12px);  /* Responsive font size */
+  gap: 10px;  /* Desktop gap */
+  font-size: 12px;  /* Desktop font size */
   color: var(--primary-dim);
   letter-spacing: 0.1em;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
 .status-dot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--primary);
   box-shadow: var(--glow-sm);
@@ -207,11 +203,11 @@ body::after {
 }
 
 /* ============================================================
-   PRESCRIPT DISPLAY — the main text box with mobile optimization
+   PRESCRIPT DISPLAY — desktop-optimized with mobile overrides
    ============================================================ */
 .prescript-box {
-  padding: clamp(20px, 5vw, 34px) clamp(16px, 4vw, 30px) clamp(20px, 4vw, 30px);  /* Responsive padding */
-  min-height: clamp(180px, 30vh, 220px);  /* Responsive height */
+  padding: 34px 30px 30px;  /* Desktop padding */
+  min-height: 220px;  /* Desktop height */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -221,20 +217,20 @@ body::after {
 
 /* "PRESCRIPT:" label */
 .prescript-label {
-  font-size: clamp(10px, 2vw, 12px);  /* Responsive font size */
+  font-size: 12px;  /* Desktop font size */
   letter-spacing: 0.34em;
   color: var(--primary-dim);
-  margin-bottom: clamp(12px, 3vw, 18px);  /* Responsive margin */
+  margin-bottom: 18px;  /* Desktop margin */
   text-transform: uppercase;
 }
 
 /* The actual prescript text output */
 #prescript-text {
-  font-size: clamp(14px, 4vw, 20px);  /* Better mobile font size */
-  line-height: 1.6;  /* Improved line height for mobile */
+  font-size: 20px;  /* Desktop font size */
+  line-height: 1.85;  /* Desktop line height */
   color: var(--primary);
   text-shadow: var(--glow-sm);
-  min-height: clamp(80px, 20vh, 120px);  /* Responsive min-height */
+  min-height: 120px;  /* Desktop min height */
   letter-spacing: 0.05em;
   word-break: break-word;
   transition: text-shadow 0.4s;
@@ -558,66 +554,61 @@ body::after {
   color: var(--bg);
 }
 
-.tasks-input-area {
+.tasks-suggestions {
+  text-align: center;
+}
+
+/* ============================================================
+   PRESCRIPT ACTION BUTTONS
+   ============================================================ */
+.prescript-actions {
   display: flex;
-  gap: clamp(6px, 1.5vw, 8px);  /* Responsive gap */
-  margin-bottom: clamp(10px, 2vw, 12px);  /* Responsive margin */
-  flex-wrap: wrap;  /* Allow wrapping on very small screens */
+  gap: 12px;
+  justify-content: center;
+  padding: 16px 20px;
+  background: rgba(79, 172, 255, 0.01);
 }
 
-#task-input {
+.btn-prescript-action {
   flex: 1;
-  min-width: 0;  /* Allow shrinking */
-  background: rgba(79, 172, 255, 0.05);
-  border: 1px solid var(--primary-dark);
-  color: var(--primary);
-  padding: clamp(8px, 2vw, 10px) clamp(10px, 2vw, 12px);  /* Responsive padding */
-  font-family: var(--font-mono);
-  font-size: clamp(12px, 2.5vw, 14px);  /* Responsive font size */
-  outline: none;
-  border-radius: 2px;
-}
-
-#task-input::placeholder {
-  color: var(--primary-dark);
-}
-
-.btn-add-task {
-  background: var(--primary);
-  color: var(--bg);
-  border: none;
-  padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 16px);  /* Responsive padding */
+  max-width: 140px;
+  padding: 12px 20px;
   font-family: var(--font-title);
-  font-size: clamp(9px, 2vw, 10px);  /* Responsive font size */
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
-  white-space: nowrap;
-  flex-shrink: 0;
-  border-radius: 2px;
-  min-width: clamp(60px, 15vw, 80px);  /* Minimum touch target */
-}
-
-.btn-add-task:hover:not(:disabled) {
-  background: var(--primary-dim);
-}
-
-.btn-add-task:disabled {
-  background: var(--primary-dark);
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.tasks-suggestions {
-  text-align: center;
-}
-
-.btn-suggest {
+  border: 1px solid;
   background: transparent;
-  border: 1px solid var(--primary-dim);
-  color: var(--primary-dim);
+  border-radius: 4px;
+}
+
+.btn-done {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-done:hover:not(:disabled) {
+  background: var(--primary);
+  color: var(--bg);
+}
+
+.btn-failed {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.btn-failed:hover:not(:disabled) {
+  background: var(--danger);
+  color: var(--bg);
+}
+
+.btn-prescript-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
   padding: 6px 12px;
   font-family: var(--font-mono);
   font-size: 10px;
@@ -878,7 +869,6 @@ body::after {
 /* Better touch targets for mobile */
 @media (hover: none) and (pointer: coarse) {
   .btn-receive,
-  .btn-add-task,
   .task-checkbox,
   .task-delete {
     min-height: 44px;  /* iOS Human Interface Guidelines minimum */
@@ -923,8 +913,6 @@ body::after {
 
 /* Better focus states for keyboard navigation */
 .btn-receive:focus,
-.btn-add-task:focus,
-#task-input:focus,
 .task-checkbox:focus,
 .task-delete:focus {
   outline: 2px solid var(--primary);

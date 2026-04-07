@@ -10,4 +10,6 @@ export const state = {
   cipherInterval: null,     // setInterval handle for cipher loop
   revealTimeout: null,      // setTimeout handle for reveal loop
   message2Interval: null,   // setInterval handle for overlapping message2
+  currentPrescript: null,   // Current active prescript text
+  prescriptPending: false,  // Whether current prescript needs completion
 };

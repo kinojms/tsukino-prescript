@@ -21,8 +21,9 @@ export function initializeDom() {
     // Tasks elements
     tasksList:          document.getElementById('tasks-list'),
     tasksStats:         document.getElementById('tasks-stats'),
-    taskInput:          document.getElementById('task-input'),
-    addTaskBtn:         document.getElementById('add-task-btn'),
-    suggestTasksBtn:    document.getElementById('suggest-tasks-btn'),
+    // Prescript action buttons
+    prescriptActions:   document.getElementById('prescript-actions'),
+    prescriptDoneBtn:   document.getElementById('prescript-done-btn'),
+    prescriptFailedBtn: document.getElementById('prescript-failed-btn'),
   };
 }

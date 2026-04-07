@@ -95,21 +95,17 @@
         <div class="tasks-list" id="tasks-list">
           <!-- Tasks will be dynamically added here -->
         </div>
-
-        <div class="tasks-input-area">
-          <input
-            type="text"
-            id="task-input"
-            placeholder="Add a new task..."
-            maxlength="100"
-          />
-          <button id="add-task-btn" class="btn-add-task">ADD</button>
-        </div>
-
-        <div class="tasks-suggestions">
-          <button id="suggest-tasks-btn" class="btn-suggest">GET SUGGESTIONS</button>
-        </div>
       </section>
+
+      <!-- Prescript Action Buttons (shown after receiving prescript) -->
+      <div class="prescript-actions" id="prescript-actions" style="display: none;">
+        <button id="prescript-done-btn" class="btn-prescript-action btn-done">
+          ✓ DONE
+        </button>
+        <button id="prescript-failed-btn" class="btn-prescript-action btn-failed">
+          ✗ FAILED
+        </button>
+      </div>
 
       <div class="beeper-divider"></div>
 

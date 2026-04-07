@@ -38,10 +38,16 @@ export function saveDailyTasks(tasks) {
 }
 
 /**
- * Add a new task
+ * Add a new task (limited to 10 per day)
  */
 export function addTask(text) {
   const dailyTasks = getDailyTasks();
+
+  // Check daily limit
+  if (dailyTasks.tasks.length >= 10) {
+    throw new Error('DAILY TASK LIMIT REACHED (10 MAX)');
+  }
+
   const newTask = {
     id: Date.now(),
     text: text.trim(),
