@@ -20,10 +20,33 @@ import {
 import { initNotifications } from './notifications.js';
 import { initTasks } from './tasks-ui.js';
 import { initCipherBackground } from './cipher-background.js';
+import { playMessageSequence } from './audio.js';
+
+// Intro quotes
+const INTRO_QUOTES = [
+  "The Prescript is the path.\nTo stray is to fall into the outskirts of one's own life.",
+  "The will of the City shapes all things.\nCompliance is the only freedom.",
+  "In the Index, every choice echoes.\nChoose wisely, or be chosen.",
+  "The Terminal whispers truths.\nListen, and be guided.",
+  "Beyond the veil of normalcy lies the Index.\nEnter, and be transformed."
+];
 
 // DOM references (will be initialized on page load)
 let dom;
 const STORAGE_KEY = 'index-prescript-daily-usage';
+
+function waitForUserInteraction() {
+  return new Promise((resolve) => {
+    const startIntro = () => {
+      document.removeEventListener('click', startIntro);
+      document.removeEventListener('keydown', startIntro);
+      resolve();
+    };
+
+    document.addEventListener('click', startIntro, { once: true });
+    document.addEventListener('keydown', startIntro, { once: true });
+  });
+}
 
 function getTodayDate() {
   return new Date().toISOString().slice(0, 10);
@@ -172,9 +195,106 @@ async function completePrescript(status) {
 }
 
 /**
+ * Run the intro animation
+ */
+async function runIntro() {
+  const introScreen = document.getElementById('intro-screen');
+  const introQuote = document.getElementById('intro-quote');
+  const introPrompt = document.getElementById('intro-prompt');
+  const introLogo = document.getElementById('intro-logo');
+
+  if (!introScreen || !introQuote || !introPrompt || !introLogo) return;
+
+  // Pick random quote and clear it until the user starts
+  const randomQuote = INTRO_QUOTES[Math.floor(Math.random() * INTRO_QUOTES.length)];
+  introQuote.textContent = '';
+  introLogo.classList.remove('visible');
+
+  introPrompt.textContent = 'CLICK OR TAP TO BEGIN';
+
+  // Wait for the first user interaction to unlock audio
+  await waitForUserInteraction();
+  introScreen.classList.add('ready');
+  introPrompt.textContent = 'LOADING…';
+
+  if (dom.message1) {
+    dom.message1.volume = 1.0;
+    dom.message1.currentTime = 0;
+    playMessageSequence(dom);
+  }
+
+  // Run cipher animation (slower for intro)
+  const originalDuration = CONFIG.cipherDuration;
+  const originalInterval = CONFIG.cipherInterval;
+  CONFIG.cipherDuration = 1000;  // Slower for intro
+  CONFIG.cipherInterval = 60;    // Slower scrambling
+
+  // Time when the reveal phase begins
+  const revealDelay = CONFIG.cipherDuration;
+  const logoFadeInDelay = revealDelay + 1500;
+
+  // Schedule logo fade-in behind the quote
+  const logoFadeIn = setTimeout(() => {
+    introLogo.classList.add('visible');
+  }, logoFadeInDelay);
+
+  // Wait for animation to complete
+  const logoFadeOutScheduled = await new Promise(resolve => {
+    runCipherAnimation(randomQuote, { prescriptText: introQuote });
+    // Calculate total animation time
+    const targetLen = randomQuote.length;
+    const revealTime = targetLen * CONFIG.revealCharDelay;
+    const totalTime = CONFIG.cipherDuration + revealTime;
+
+    setTimeout(() => {
+      resolve(totalTime);
+    }, totalTime);
+  });
+
+  // Restore original timings
+  CONFIG.cipherDuration = originalDuration;
+  CONFIG.cipherInterval = originalInterval;
+
+  introPrompt.textContent = '';
+
+  setTimeout(() => {
+    introLogo.classList.remove('visible');
+  }, logoFadeOutScheduled + 3500);
+
+  // Wait 5 seconds after reveal, then fade out
+  setTimeout(() => {
+    // Start cipher background before fade out
+    initCipherBackground(dom);
+
+    introScreen.classList.add('fade-out');
+    setTimeout(() => {
+      introScreen.style.display = 'none';
+      localStorage.setItem('introShown', 'true');
+      initApp();
+    }, 1000);  // Wait for fade transition
+  }, 5000);
+}
+
+
+/**
  * Initialize the application
  */
 function init() {
+  // Cache DOM elements early for intro
+  dom = initializeDom();
+
+  // Check if intro has been shown
+  if (!localStorage.getItem('introShown')) {
+    runIntro();
+  } else {
+    // Skip intro, hide it immediately
+    const introScreen = document.getElementById('intro-screen');
+    if (introScreen) introScreen.style.display = 'none';
+    initApp();
+  }
+}
+
+function initApp() {
   // Cache DOM elements
   dom = initializeDom();
   const dailyUsage = loadDailyUsage();
@@ -199,9 +319,6 @@ function init() {
 
   // Initialize tasks
   initTasks(dom);
-
-  // Initialize cipher background animation
-  initCipherBackground(dom);
 
   // Attach event listeners
   dom.btnReceive.addEventListener('click', fetchPrescript);

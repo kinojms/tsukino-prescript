@@ -40,6 +40,79 @@ html, body {
 }
 
 /* ============================================================
+   INTRO SCREEN — full-screen intro animation
+   ============================================================ */
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 1s ease-out;
+}
+
+.intro-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-quote {
+  font-size: clamp(18px, 4vw, 28px);
+  line-height: 1.6;
+  color: var(--primary);
+  text-align: center;
+  max-width: 80%;
+  font-family: var(--font-pixel);
+  text-shadow: var(--glow-md);
+  white-space: pre-line;
+}
+
+.intro-prompt {
+  margin-top: 24px;
+  font-size: clamp(12px, 2.5vw, 16px);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(79, 172, 255, 0.85);
+  opacity: 0.85;
+}
+
+.intro-logo {
+  position: absolute;
+  inset: 0;
+  background-image: url('../assets/images/index-logo.png');
+  background-position: center center;
+  background-size: 30% auto;
+  background-repeat: no-repeat;
+  opacity: 0;
+  pointer-events: none;
+  filter: brightness(1.5) contrast(1.2);
+  transition: opacity 0.8s ease;
+}
+
+.intro-logo.visible {
+  opacity: 0.08;
+}
+
+.intro-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100%;
+}
+
+.intro-screen.ready .intro-prompt {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* ============================================================
    CRT OVERLAY — scanlines and vignette layered on top of all
    ============================================================ */
 body::before {

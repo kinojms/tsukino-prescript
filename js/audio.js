@@ -16,10 +16,12 @@ export function startOverlappingMessage2(dom) {
       const intervalMs = Math.max(100, (dom.message2.duration - 0.1) * 1000);
       state.message2Interval = setInterval(() => {
         const audio = new Audio('./assets/audio/index_message_2.wav');
+        audio.volume = 1.0;
         audio.play().catch(() => {});
       }, intervalMs);
       // Play the first one immediately
       const firstAudio = new Audio('./assets/audio/index_message_2.wav');
+      firstAudio.volume = 1.0;
       firstAudio.play().catch(() => {});
     } else {
       setTimeout(checkDuration, 10);
@@ -34,6 +36,8 @@ export function startOverlappingMessage2(dom) {
 export function playMessageSequence(dom) {
   if (!dom.message1) return;
 
+  dom.message1.volume = 1.0;
+  if (dom.message2) dom.message2.volume = 1.0;
   dom.message1.play().catch(() => {});
 
   const checkDuration = () => {
