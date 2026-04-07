@@ -30,7 +30,7 @@
 
 html, body {
   height: 100%;
-  background: transparent;  /* Remove black background to show cipher text */
+  background: rgb(0, 0, 0);  /* Remove black background to show cipher text */
   color: var(--primary);
   font-family: var(--font-mono);
   overflow: hidden;          /* No scrollbar — everything fits viewport */
@@ -102,7 +102,7 @@ body::after {
   overflow: hidden;
   position: relative;
   z-index: 2;
-  background: rgba(0, 0, 0, 0.85);  /* Semi-transparent background to show cipher text through */
+  background: rgba(0, 0, 0);  /* Semi-transparent background to show cipher text through */
 }
 
 /* Horizontal glitch line that sweeps down occasionally */
@@ -662,15 +662,15 @@ body::after {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: -1;  /* Behind terminal shell but above page background */
+  z-index: -1;
   overflow: hidden;
-  opacity: 0.9;  /* Increased visibility */
+  opacity: 0.6;
   font-family: var(--font-mono);
   font-size: 14px;
   line-height: 1.3;
-  color: var(--primary);  /* Use intended primary blue color */
+  color: var(--primary);
   background: transparent;
-  white-space: pre;  /* Preserve whitespace and line breaks */
+  white-space: pre;
 }
 
 .cipher-background::before {
@@ -684,10 +684,10 @@ body::after {
     to bottom,
     transparent 0px,
     transparent 20px,
-    rgb(79, 173, 255) 20px,
-    rgb(79, 173, 255) 40px
+    rgba(79, 173, 255, 0.116) 20px,
+    rgba(79, 173, 255, 0.116) 40px
   );
-  animation: cipher-scan 8s linear infinite;
+  animation: cipher-scan 10s linear infinite;
 }
 
 @keyframes cipher-scan {
