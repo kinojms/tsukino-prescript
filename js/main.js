@@ -19,6 +19,7 @@ import {
 } from './ui.js';
 import { initNotifications } from './notifications.js';
 import { initTasks } from './tasks-ui.js';
+import { initCipherBackground } from './cipher-background.js';
 
 // DOM references (will be initialized on page load)
 let dom;
@@ -198,6 +199,9 @@ function init() {
 
   // Initialize tasks
   initTasks(dom);
+
+  // Initialize cipher background animation
+  initCipherBackground(dom);
 
   // Attach event listeners
   dom.btnReceive.addEventListener('click', fetchPrescript);

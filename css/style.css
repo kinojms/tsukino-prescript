@@ -650,7 +650,47 @@ body::after {
   0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1);    }
   50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.12); }
 }
+/* ============================================================
+   CIPHER BACKGROUND — constantly shuffling text animation
+   ============================================================ */
+.cipher-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -2;  /* Behind ambient-glow */
+  overflow: hidden;
+  opacity: 0.15;  /* Very faint */
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--primary-dim);
+  background: transparent;
+}
 
+.cipher-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 20px,
+    rgba(79, 172, 255, 0.02) 20px,
+    rgba(79, 172, 255, 0.02) 40px
+  );
+  animation: cipher-scan 8s linear infinite;
+}
+
+@keyframes cipher-scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
 /* ============================================================
    CORNER DECORATORS — hex-bracket corners for a tech UI feel
    ============================================================ */

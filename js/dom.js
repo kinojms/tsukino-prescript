@@ -25,5 +25,7 @@ export function initializeDom() {
     prescriptActions:   document.getElementById('prescript-actions'),
     prescriptDoneBtn:   document.getElementById('prescript-done-btn'),
     prescriptFailedBtn: document.getElementById('prescript-failed-btn'),
+    // Cipher background
+    cipherBackground:   document.getElementById('cipher-background'),
   };
 }
