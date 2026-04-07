@@ -660,13 +660,13 @@ body::after {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: 1;  /* Temporarily above everything for testing */
+  z-index: -3;  /* Behind everything for subtle effect */
   overflow: hidden;
-  opacity: 0.8;  /* Increased for testing */
+  opacity: 0.08;  /* Very subtle */
   font-family: var(--font-mono);
-  font-size: 16px;  /* Larger for testing */
-  line-height: 1.2;
-  color: #ffffff;  /* White text for testing */
+  font-size: 11px;
+  line-height: 1.1;
+  color: var(--primary-dim);
   background: transparent;
   white-space: pre;  /* Preserve whitespace and line breaks */
 }

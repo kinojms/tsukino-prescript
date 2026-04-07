@@ -54,11 +54,6 @@ function updateCipherText() {
 
   cipherText = chars.join('');
   dom.cipherBackground.textContent = cipherText;
-
-  // Debug: log occasionally
-  if (Math.random() < 0.01) { // 1% chance to log
-    console.log('[CIPHER] Updated text, first 50 chars:', cipherText.substring(0, 50));
-  }
 }
 
 /**
@@ -99,9 +94,6 @@ export function initCipherBackground(domRefs) {
 
   if (dom.cipherBackground) {
     console.log('[CIPHER] Initializing cipher background animation');
-    // Set some initial visible text for testing
-    dom.cipherBackground.textContent = 'TEST CIPHER TEXT\nABCDEFGHIJKLMNOPQRSTUVWXYZ\n0123456789';
-    console.log('[CIPHER] Set initial test text');
     startCipherAnimation();
   } else {
     console.warn('[CIPHER] Cipher background element not found');
