@@ -660,14 +660,15 @@ body::after {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  z-index: -2;  /* Behind ambient-glow */
+  z-index: 1;  /* Temporarily above everything for testing */
   overflow: hidden;
-  opacity: 0.15;  /* Very faint */
+  opacity: 0.8;  /* Increased for testing */
   font-family: var(--font-mono);
-  font-size: 14px;
-  line-height: 1.4;
-  color: var(--primary-dim);
+  font-size: 16px;  /* Larger for testing */
+  line-height: 1.2;
+  color: #ffffff;  /* White text for testing */
   background: transparent;
+  white-space: pre;  /* Preserve whitespace and line breaks */
 }
 
 .cipher-background::before {
