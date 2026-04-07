@@ -34,6 +34,9 @@ html, body {
   color: var(--primary);
   font-family: var(--font-mono);
   overflow: hidden;          /* No scrollbar — everything fits viewport */
+  -webkit-text-size-adjust: 100%;  /* Prevent font scaling on iOS */
+  -webkit-font-smoothing: antialiased;  /* Better text rendering */
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ============================================================
@@ -69,7 +72,7 @@ body::after {
 }
 
 /* ============================================================
-   MAIN LAYOUT — centered column
+   MAIN LAYOUT — centered column with mobile-first approach
    ============================================================ */
 .terminal-shell {
   min-height: 100vh;
@@ -77,17 +80,18 @@ body::after {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 32px 20px;
+  padding: 16px 12px;  /* Reduced padding for mobile */
   gap: 0;
   position: relative;
 }
 
 /* ============================================================
-   BEEPER DEVICE WRAPPER
+   BEEPER DEVICE WRAPPER — responsive container
    ============================================================ */
 .beeper {
   width: 100%;
   max-width: 960px;
+  min-height: 100vh;  /* Ensure full height on mobile */
   border: 1px solid var(--primary-dim);
   border-radius: 8px;
   box-shadow:
@@ -123,28 +127,30 @@ body::after {
 }
 
 /* ============================================================
-   HEADER BAR
+   HEADER BAR — responsive layout
    ============================================================ */
 .beeper-header {
   background: rgba(79, 172, 255, 0.05);
   border-bottom: 1px solid var(--primary-dark);
-  padding: 18px 24px;
+  padding: 16px 20px;  /* Reduced padding for mobile */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
+  flex-wrap: wrap;  /* Allow wrapping on very small screens */
 }
 
 .org-logo-img {
-  height: 42px;
+  height: clamp(32px, 8vw, 42px);  /* Responsive logo size */
   width: auto;
   filter: drop-shadow(var(--glow-sm));
-  margin-right: 14px;
+  margin-right: 12px;
+  flex-shrink: 0;
 }
 
 .org-logo-text {
   font-family: var(--font-title);
-  font-size: clamp(12px, 3vw, 18px);
+  font-size: clamp(11px, 2.5vw, 16px);  /* Responsive font size */
   font-weight: 900;
   letter-spacing: 0.22em;
   text-shadow: var(--glow-md);
@@ -159,16 +165,17 @@ body::after {
 .status-indicator {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 12px;
+  gap: 8px;  /* Reduced gap for mobile */
+  font-size: clamp(10px, 2vw, 12px);  /* Responsive font size */
   color: var(--primary-dim);
   letter-spacing: 0.1em;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .status-dot {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--primary);
   box-shadow: var(--glow-sm);
@@ -200,11 +207,11 @@ body::after {
 }
 
 /* ============================================================
-   PRESCRIPT DISPLAY — the main text box
+   PRESCRIPT DISPLAY — the main text box with mobile optimization
    ============================================================ */
 .prescript-box {
-  padding: 34px 30px 30px;
-  min-height: 220px;
+  padding: clamp(20px, 5vw, 34px) clamp(16px, 4vw, 30px) clamp(20px, 4vw, 30px);  /* Responsive padding */
+  min-height: clamp(180px, 30vh, 220px);  /* Responsive height */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -214,20 +221,20 @@ body::after {
 
 /* "PRESCRIPT:" label */
 .prescript-label {
-  font-size: 12px;
+  font-size: clamp(10px, 2vw, 12px);  /* Responsive font size */
   letter-spacing: 0.34em;
   color: var(--primary-dim);
-  margin-bottom: 18px;
+  margin-bottom: clamp(12px, 3vw, 18px);  /* Responsive margin */
   text-transform: uppercase;
 }
 
 /* The actual prescript text output */
 #prescript-text {
-  font-size: clamp(16px, 3vw, 20px);
-  line-height: 1.85;
+  font-size: clamp(14px, 4vw, 20px);  /* Better mobile font size */
+  line-height: 1.6;  /* Improved line height for mobile */
   color: var(--primary);
   text-shadow: var(--glow-sm);
-  min-height: 120px;
+  min-height: clamp(80px, 20vh, 120px);  /* Responsive min-height */
   letter-spacing: 0.05em;
   word-break: break-word;
   transition: text-shadow 0.4s;
@@ -323,14 +330,14 @@ body::after {
 }
 
 /* ============================================================
-   FOOTER / BUTTON AREA
+   FOOTER / BUTTON AREA — mobile-optimized
    ============================================================ */
 .beeper-footer {
-  padding: 24px 28px;
+  padding: clamp(16px, 4vw, 24px) clamp(16px, 3vw, 28px);  /* Responsive padding */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: clamp(12px, 3vw, 18px);  /* Responsive gap */
   background: rgba(79, 172, 255, 0.025);
 }
 
@@ -444,10 +451,10 @@ body::after {
 .error-msg.visible { display: block; }
 
 /* ============================================================
-   TASKS SECTION
+   TASKS SECTION — mobile-optimized layout
    ============================================================ */
 .tasks-section {
-  padding: 24px 28px;
+  padding: clamp(16px, 4vw, 24px) clamp(16px, 3vw, 28px);  /* Responsive padding */
   background: rgba(79, 172, 255, 0.01);
 }
 
@@ -455,32 +462,35 @@ body::after {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: clamp(12px, 2vw, 16px);  /* Responsive margin */
+  flex-wrap: wrap;  /* Allow wrapping on small screens */
+  gap: 8px;
 }
 
 .tasks-label {
-  font-size: 12px;
+  font-size: clamp(10px, 2vw, 12px);  /* Responsive font size */
   letter-spacing: 0.3em;
   color: var(--primary-dim);
   text-transform: uppercase;
 }
 
 .tasks-stats {
-  font-size: 10px;
+  font-size: clamp(9px, 1.8vw, 10px);  /* Responsive font size */
   color: var(--primary-dark);
   letter-spacing: 0.1em;
+  white-space: nowrap;
 }
 
 .tasks-list {
-  min-height: 40px;
-  margin-bottom: 16px;
+  min-height: clamp(32px, 8vh, 40px);  /* Responsive min-height */
+  margin-bottom: clamp(12px, 2vw, 16px);  /* Responsive margin */
 }
 
 .task-item {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 0;
+  align-items: flex-start;  /* Changed from center for better mobile layout */
+  gap: clamp(8px, 2vw, 12px);  /* Responsive gap */
+  padding: clamp(10px, 2vw, 12px) 0;  /* Responsive padding */
   border-bottom: 1px solid var(--primary-dark);
   opacity: 0.8;
   transition: opacity 0.2s;
@@ -492,13 +502,14 @@ body::after {
 }
 
 .task-checkbox {
-  width: 16px;
-  height: 16px;
+  width: clamp(16px, 4vw, 18px);  /* Responsive checkbox size */
+  height: clamp(16px, 4vw, 18px);  /* Responsive checkbox size */
   border: 1px solid var(--primary-dim);
   background: transparent;
   cursor: pointer;
   position: relative;
   flex-shrink: 0;
+  margin-top: 2px;  /* Align with text */
 }
 
 .task-checkbox:checked {
@@ -513,31 +524,33 @@ body::after {
   left: 50%;
   transform: translate(-50%, -50%);
   color: var(--bg);
-  font-size: 10px;
+  font-size: clamp(8px, 2vw, 10px);  /* Responsive checkmark size */
   font-weight: bold;
 }
 
 .task-text {
   flex: 1;
-  font-size: 12px;
+  font-size: clamp(12px, 2.5vw, 14px);  /* Responsive font size */
   color: var(--primary);
   line-height: 1.4;
   word-break: break-word;
+  padding-right: 8px;  /* Space for delete button */
 }
 
 .task-delete {
-  width: 20px;
-  height: 20px;
+  width: clamp(20px, 5vw, 24px);  /* Responsive button size */
+  height: clamp(20px, 5vw, 24px);  /* Responsive button size */
   background: transparent;
   border: 1px solid var(--danger);
   color: var(--danger);
   cursor: pointer;
-  font-size: 10px;
+  font-size: clamp(10px, 2.5vw, 12px);  /* Responsive font size */
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   transition: all 0.2s;
+  border-radius: 2px;  /* Better touch target */
 }
 
 .task-delete:hover {
@@ -547,19 +560,22 @@ body::after {
 
 .tasks-input-area {
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: clamp(6px, 1.5vw, 8px);  /* Responsive gap */
+  margin-bottom: clamp(10px, 2vw, 12px);  /* Responsive margin */
+  flex-wrap: wrap;  /* Allow wrapping on very small screens */
 }
 
 #task-input {
   flex: 1;
+  min-width: 0;  /* Allow shrinking */
   background: rgba(79, 172, 255, 0.05);
   border: 1px solid var(--primary-dark);
   color: var(--primary);
-  padding: 8px 12px;
+  padding: clamp(8px, 2vw, 10px) clamp(10px, 2vw, 12px);  /* Responsive padding */
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: clamp(12px, 2.5vw, 14px);  /* Responsive font size */
   outline: none;
+  border-radius: 2px;
 }
 
 #task-input::placeholder {
@@ -570,14 +586,18 @@ body::after {
   background: var(--primary);
   color: var(--bg);
   border: none;
-  padding: 8px 16px;
+  padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 16px);  /* Responsive padding */
   font-family: var(--font-title);
-  font-size: 10px;
+  font-size: clamp(9px, 2vw, 10px);  /* Responsive font size */
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-radius: 2px;
+  min-width: clamp(60px, 15vw, 80px);  /* Minimum touch target */
 }
 
 .btn-add-task:hover:not(:disabled) {
@@ -653,11 +673,271 @@ body::after {
 .corner-br { bottom: -1px; right: -1px; border-bottom: 2px solid var(--primary); border-right: 2px solid var(--primary); }
 
 /* ============================================================
-   RESPONSIVE ADJUSTMENTS
+   RESPONSIVE ADJUSTMENTS — comprehensive mobile optimization
    ============================================================ */
+
+/* Large tablets and small laptops (768px - 1024px) */
+@media (max-width: 1024px) {
+  .terminal-shell {
+    padding: 20px 16px;
+  }
+
+  .beeper {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+/* Tablets (601px - 767px) */
+@media (max-width: 767px) {
+  .terminal-shell {
+    padding: 16px 12px;
+  }
+
+  .beeper-header {
+    padding: 14px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .status-indicator {
+    align-self: flex-end;
+    font-size: 11px;
+  }
+
+  .prescript-box {
+    padding: 24px 16px 20px;
+  }
+
+  .tasks-section {
+    padding: 20px 16px;
+  }
+
+  .beeper-footer {
+    padding: 20px 16px;
+  }
+}
+
+/* Large mobile phones (481px - 600px) */
+@media (max-width: 600px) {
+  .org-logo-text {
+    font-size: 14px;
+  }
+
+  .prescript-label {
+    font-size: 11px;
+    margin-bottom: 14px;
+  }
+
+  #prescript-text {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .tasks-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .tasks-stats {
+    align-self: flex-end;
+  }
+
+  .task-item {
+    gap: 10px;
+    padding: 10px 0;
+  }
+
+  .task-text {
+    font-size: 13px;
+  }
+}
+
+/* Small mobile phones (361px - 480px) */
 @media (max-width: 480px) {
-  .beeper-header { padding: 12px 16px; }
-  .prescript-box { padding: 22px 18px 18px; }
-  .compliance-bar-wrap { padding: 0 18px 16px; }
-  .beeper-footer { padding: 16px 18px; }
+  .beeper-header {
+    padding: 12px 14px;
+  }
+
+  .prescript-box {
+    padding: 20px 14px 16px;
+    min-height: 160px;
+  }
+
+  .prescript-label {
+    font-size: 10px;
+    margin-bottom: 12px;
+  }
+
+  #prescript-text {
+    font-size: 15px;
+    min-height: 60px;
+  }
+
+  .compliance-bar-wrap {
+    padding: 0 14px 14px;
+  }
+
+  .beeper-footer {
+    padding: 16px 14px;
+  }
+
+  .tasks-section {
+    padding: 16px 14px;
+  }
+
+  .task-item {
+    gap: 8px;
+    padding: 8px 0;
+  }
+
+  .task-checkbox {
+    width: 18px;
+    height: 18px;
+  }
+
+  .task-delete {
+    width: 22px;
+    height: 22px;
+  }
+
+  .tasks-input-area {
+    gap: 6px;
+  }
+
+  #task-input {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .btn-add-task {
+    padding: 10px 14px;
+    font-size: 11px;
+    min-width: 70px;
+  }
+}
+
+/* Very small phones (≤ 360px) */
+@media (max-width: 360px) {
+  .terminal-shell {
+    padding: 12px 8px;
+  }
+
+  .beeper-header {
+    padding: 10px 12px;
+  }
+
+  .org-logo-img {
+    height: 28px;
+    margin-right: 8px;
+  }
+
+  .org-logo-text {
+    font-size: 12px;
+  }
+
+  .status-indicator {
+    font-size: 10px;
+    gap: 6px;
+  }
+
+  .prescript-box {
+    padding: 16px 12px 14px;
+    min-height: 140px;
+  }
+
+  #prescript-text {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .tasks-section {
+    padding: 14px 12px;
+  }
+
+  .task-text {
+    font-size: 12px;
+  }
+
+  .beeper-footer {
+    padding: 14px 12px;
+  }
+
+  .btn-receive {
+    padding: 16px 32px;
+    font-size: 14px;
+  }
+}
+
+/* ============================================================
+   MOBILE-SPECIFIC IMPROVEMENTS
+   ============================================================ */
+
+/* Better touch targets for mobile */
+@media (hover: none) and (pointer: coarse) {
+  .btn-receive,
+  .btn-add-task,
+  .task-checkbox,
+  .task-delete {
+    min-height: 44px;  /* iOS Human Interface Guidelines minimum */
+    min-width: 44px;
+  }
+
+  .task-checkbox {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .task-delete {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* Prevent zoom on input focus for iOS */
+@media screen and (max-width: 767px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px !important;  /* Prevents zoom on iOS */
+  }
+}
+
+/* Improve scrolling on mobile */
+@media (max-width: 767px) {
+  .beeper {
+    overflow-y: auto;  /* Allow scrolling if content overflows */
+    max-height: 100vh;
+  }
+
+  .tasks-list {
+    max-height: 40vh;  /* Limit task list height on mobile */
+    overflow-y: auto;
+  }
+}
+
+/* Better focus states for keyboard navigation */
+.btn-receive:focus,
+.btn-add-task:focus,
+#task-input:focus,
+.task-checkbox:focus,
+.task-delete:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
