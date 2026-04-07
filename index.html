@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THE INDEX — PRESCRIPT TERMINAL</title>
+
+  <!-- Google Fonts: terminal-style fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Pixelify+Sans&display=swap" rel="stylesheet" />
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="./manifest.json" />
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+
+  <!-- Ambient background glow -->
+  <div class="ambient-glow"></div>
+
+  <!-- Audio resources -->
+  <audio id="message1" src="./assets/audio/index_message_1.wav" preload="auto"></audio>
+  <audio id="message2" src="./assets/audio/index_message_2.wav" preload="auto"></audio>
+
+  <main class="terminal-shell">
+
+    <!-- ======================== BEEPER DEVICE ======================== -->
+    <div class="beeper" role="main" aria-label="Index Prescript Terminal">
+
+      <!-- Corner decorators -->
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+
+      <!-- Header bar -->
+      <header class="beeper-header">
+        <div class="org-logo-text">
+          <img src="./assets/images/index-logo.png" alt="The Index" class="org-logo-img" />
+          <span>INDEX: PRESCRIPT TERMINAL</span>
+        </div>
+        <div class="status-indicator" aria-live="polite">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="status-text">AWAITING COMPLIANCE</span>
+        </div>
+      </header>
+
+      <!-- Transmission metadata -->
+      <div class="transmission-meta" aria-hidden="true">
+        <span>CHANNEL: PRESCRIPT-RELAY</span>
+        <span id="meta-id">ID: —————</span>
+        <span id="meta-time">——:——:——</span>
+      </div>
+
+      <!-- Main text display -->
+      <section class="prescript-box">
+        <div class="prescript-label">▸ INCOMING PRESCRIPT</div>
+        <div id="prescript-text" aria-live="polite" aria-atomic="true">
+          <span class="idle-placeholder">AWAITING SIGNAL FROM THE INDEX...</span>
+          <span class="cursor-blink" aria-hidden="true"></span>
+        </div>
+      </section>
+
+      <!-- Compliance progress bar -->
+      <div class="compliance-bar-wrap" aria-hidden="true">
+        <div class="compliance-label">
+          <span>COMPLIANCE SCORE</span>
+          <span id="compliance-pct">—%</span>
+        </div>
+        <div class="compliance-bar">
+          <div class="compliance-fill" id="compliance-fill"></div>
+        </div>
+      </div>
+
+      <div class="beeper-divider"></div>
+
+      <!-- Tasks Section -->
+      <section class="tasks-section" id="tasks-section">
+        <div class="tasks-header">
+          <div class="tasks-label">DAILY TASKS</div>
+          <div class="tasks-stats" id="tasks-stats">0/0 COMPLETED</div>
+        </div>
+
+        <div class="tasks-list" id="tasks-list">
+          <!-- Tasks will be dynamically added here -->
+        </div>
+
+        <div class="tasks-input-area">
+          <input
+            type="text"
+            id="task-input"
+            placeholder="Add a new task..."
+            maxlength="100"
+          />
+          <button id="add-task-btn" class="btn-add-task">ADD</button>
+        </div>
+
+        <div class="tasks-suggestions">
+          <button id="suggest-tasks-btn" class="btn-suggest">GET SUGGESTIONS</button>
+        </div>
+      </section>
+
+      <div class="beeper-divider"></div>
+
+      <!-- Footer with button and counters -->
+      <footer class="beeper-footer">
+        <div class="compliance-warning" id="compliance-warning" aria-live="polite">
+          ⚠ NON-COMPLIANCE WILL BE MET WITH VISITATION ⚠
+        </div>
+
+        <button
+          class="btn-receive"
+          id="btn-receive"
+          aria-label="Request a new Prescript from The Index"
+        >
+          RECEIVE NEW PRESCRIPT
+        </button>
+
+        <div class="prescript-counter" id="prescript-counter" aria-live="polite">
+          PRESCRIPTS RECEIVED THIS SESSION: 0
+        </div>
+
+        <div class="error-msg" id="error-msg" role="alert"></div>
+      </footer>
+
+    </div>
+    <!-- ======================== END BEEPER ======================== -->
+
+    <!-- Classification watermark -->
+    <div class="classification-tag" aria-hidden="true">
+      CLASSIFIED — INDEX INTERNAL RELAY — WEAVER AUTHORITY LEVEL Ω
+    </div>
+
+  </main>
+
+  <!-- Main JavaScript Module -->
+  <script type="module" src="./js/main.js"></script>
+
+</body>
+</html>
