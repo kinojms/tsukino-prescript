@@ -1,7 +1,7 @@
 // Service Worker for PWA functionality
 const CACHE_NAME = 'prescript-terminal-v1';
 const urlsToCache = [
-  '/',
+  './',
   './index.html',
   './css/style.css',
   './js/main.js',
@@ -75,7 +75,7 @@ self.addEventListener('notificationclick', (event) => {
 
   if (event.action === 'view') {
     event.waitUntil(
-      clients.openWindow('/')
+      clients.openWindow('./')
     );
   }
 });
