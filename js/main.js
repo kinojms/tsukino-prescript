@@ -135,7 +135,7 @@ async function fetchPrescript() {
 /**
  * Handle prescript completion (Done or Failed)
  */
-function completePrescript(status) {
+async function completePrescript(status) {
   if (!state.prescriptPending || !state.currentPrescript) return;
 
   try {
@@ -157,7 +157,6 @@ function completePrescript(status) {
     dom.btnReceive.textContent = 'RECEIVE NEW PRESCRIPT';
 
     // Update UI
-    const { initTasks } = await import('./tasks-ui.js');
     initTasks(dom);
 
     // Show success message
